@@ -1,4 +1,17 @@
-const roomNames = ["Hoarding OCD", "Paranoid Schizophrenia", "Generalized Anxiety Disorder", "Major Depressive Disorder"];
+const roomNames = [
+  "Hoarding OCD",
+  "Paranoid Schizophrenia",
+  "Generalized Anxiety Disorder",
+  "Major Depressive Disorder"
+];
+
+// Mapping room names to consistent integer IDs
+export const roomNameToIdMap = {
+  "Hoarding OCD": 1,
+  "Paranoid Schizophrenia": 2,
+  "Generalized Anxiety Disorder": 3,
+  "Major Depressive Disorder": 4
+};
 
 const generatePersonDescription = (condition, name) => {
   const descriptions = {

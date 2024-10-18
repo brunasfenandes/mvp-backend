@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { roomData } from '../utils/roomData.js';
+import { roomData, roomNameToIdMap } from '../utils/roomData.js';
 
 /**
  * @param { import("knex").Knex } knex
@@ -13,6 +13,7 @@ export async function seed(knex) {
   let currentDate = new Date();
 
   for (const [roomName, data] of Object.entries(roomData)) {
+    const roomId = roomNameToIdMap[roomName];
     const humanBookName = faker.person.fullName();
     const humanBookReaderName = faker.person.fullName();
 
@@ -21,6 +22,8 @@ export async function seed(knex) {
       name: humanBookName,
       comment: data.description(humanBookName),
       roomName: roomName,
+      roomId: roomId,
+      commentId: knex.fn.uuid(),
       created_at: currentDate
     });
     currentDate = new Date(currentDate.getTime() + 60000);
@@ -31,6 +34,8 @@ export async function seed(knex) {
         name: humanBookName,
         comment: question,
         roomName: roomName,
+        roomId: roomId,
+        commentId: knex.fn.uuid(),
         created_at: currentDate
       });
       currentDate = new Date(currentDate.getTime() + 60000);
@@ -43,6 +48,8 @@ export async function seed(knex) {
         name: speaker,
         comment: data.conversation[i],
         roomName: roomName,
+        roomId: roomId,
+        commentId: knex.fn.uuid(),
         created_at: currentDate
       });
       currentDate = new Date(currentDate.getTime() + 60000);
