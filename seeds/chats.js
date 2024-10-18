@@ -23,6 +23,7 @@ export async function seed(knex) {
       comment: data.description(humanBookName),
       roomName: roomName,
       roomId: roomId,
+      commentId: knex.fn.uuid(),
       created_at: currentDate
     });
     currentDate = new Date(currentDate.getTime() + 60000);
@@ -34,6 +35,7 @@ export async function seed(knex) {
         comment: question,
         roomName: roomName,
         roomId: roomId,
+        commentId: knex.fn.uuid(),
         created_at: currentDate
       });
       currentDate = new Date(currentDate.getTime() + 60000);
@@ -47,6 +49,7 @@ export async function seed(knex) {
         comment: data.conversation[i],
         roomName: roomName,
         roomId: roomId,
+        commentId: knex.fn.uuid(),
         created_at: currentDate
       });
       currentDate = new Date(currentDate.getTime() + 60000);

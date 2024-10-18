@@ -1,20 +1,20 @@
 import { validationResult } from 'express-validator';
 import initKnex from 'knex';
-import configuration from "../knexfile.js";
+import configuration from "../../knexfile.js";
 
 const knex = initKnex(configuration);
 
 /**
- * Retrieves all chats for a specific room, sorted by creation date.ct.
+ * Retrieves all chats for a specific room, sorted by creation date.
  */
-const getChatsByRoomId = async (req, res) => {
+export const getChatsByRoomId = async (req, res) => {
   // Validate request parameters
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   
-  const { id: roomId } = req.params;
+  const { roomId } = req.params;
 
   try {
     const chats = await knex('chats')
@@ -32,24 +32,28 @@ const getChatsByRoomId = async (req, res) => {
 /**
  * Adds a new chat to a specific room.
  */
-const addChatToRoom = async (req, res) => {
+export const addChatToRoom = async (req, res) => {
   // Validate request parameters and body
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   
-  const { id: roomId } = req.params;
+  const { roomId } = req.params;
   const { name, comment } = req.body;
 
   try {
-    const [newChat] = await knex('chats')
+    const newChatId = await knex('chats')
       .insert({
         name,
         comment,
         roomId
-      })
-      .returning(['name', 'comment', 'commentId', 'roomName', 'roomId']);
+      });
+
+    const newChat = await knex('chats')
+      .select('name', 'comment', 'commentId', 'roomName', 'roomId')
+      .where({ id: newChatId[0] })
+      .first();
 
     return res.status(201).json(newChat);
   } catch (error) {
@@ -61,14 +65,14 @@ const addChatToRoom = async (req, res) => {
 /**
  * Clears all chats in a specific room.
  */
-const clearChatsInRoom = async (req, res) => {
+export const clearChatsInRoom = async (req, res) => {
   // Validate request parameters
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   
-  const { id: roomId } = req.params;
+  const { roomId } = req.params;
 
   try {
     await knex('chats')
@@ -85,14 +89,14 @@ const clearChatsInRoom = async (req, res) => {
 /**
  * Deletes a specific chat in a room based on commentId.
  */
-const deleteChatInRoom = async (req, res) => {
+export const deleteChatInRoom = async (req, res) => {
   // Validate request parameters
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   
-  const { id: roomId, id: commentId } = req.params;
+  const { roomId, commentId } = req.params;
 
   try {
     const deletedRows = await knex('chats')
@@ -108,12 +112,4 @@ const deleteChatInRoom = async (req, res) => {
     console.error(`Error deleting chat ${commentId} in room ${roomId}:`, error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
-};
-
-
-export default {
-  getChatsByRoomId,
-  addChatToRoom,
-  clearChatsInRoom,
-  deleteChatInRoom
 };

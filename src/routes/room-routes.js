@@ -10,13 +10,13 @@ import {
 const router = express.Router();
 
 /**
- * @route   GET /room/:id
+ * @route   GET /room/:roomId
  * @desc    Retrieve all chats for a specific room
  */
 router.get(
-  '/:id',
+  '/:roomId/chat',
   [
-    param('id')
+    param('roomId')
       .isInt()
       .withMessage('Invalid room ID format. Must be an integer.'),
   ],
@@ -24,13 +24,13 @@ router.get(
 );
 
 /**
- * @route   POST /room/:id/chat
+ * @route   POST /room/:roomId/chat
  * @desc    Add a new chat to a specific room
  */
 router.post(
-  '/:id/chat',
+  '/:roomId/chat',
   [
-    param('id')
+    param('roomId')
       .isInt()
       .withMessage('Invalid room ID format. Must be an integer.'),
     body('name')
@@ -48,13 +48,13 @@ router.post(
 );
 
 /**
- * @route   DELETE /room/:id
+ * @route   DELETE /room/:roomId
  * @desc    Clear all chats in a specific room
  */
 router.delete(
-  '/:id',
+  '/:roomId/chat',
   [
-    param('id')
+    param('roomId')
       .isInt()
       .withMessage('Invalid room ID format. Must be an integer.'),
   ],
@@ -62,16 +62,16 @@ router.delete(
 );
 
 /**
- * @route   DELETE /room/:id/chat/:id
+ * @route   DELETE /room/:roomId/chat/:commentId
  * @desc    Delete a specific chat in a room based on commentId
  */
 router.delete(
-  '/:id/chat/:id',
+  '/:roomId/chat/:commentId',
   [
-    param('id')
+    param('roomId')
       .isInt()
       .withMessage('Invalid room ID format. Must be an integer.'),
-    param('id')
+    param('commentId')
       .isUUID()
       .withMessage('Invalid comment ID format. Must be UUID.')
   ],
