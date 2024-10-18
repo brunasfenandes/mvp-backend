@@ -11,6 +11,7 @@ export function up(knex) {
         table.text('comment', 'longtext').notNullable(); //needs to be extra long, string, and normal text are not enough
         table.string('commentId').notNullable().defaultTo(v4());
         table.string('roomName').notNullable();
+        table.integer('roomId').notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
     });
 };

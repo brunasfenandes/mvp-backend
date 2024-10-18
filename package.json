@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch index.js",
+    "start": "node --watch src/index.js",
     "seed": "npx knex seed:run",
     "migrate": "npx knex migrate:latest",
     "rollback": "npx knex migrate:rollback"
