@@ -5,7 +5,7 @@ import {
   addChatToRoom,
   clearChatsInRoom,
   deleteChatInRoom
-} from '../controllers/room-controller.js';
+} from '../controllers/chat-controller.js';
 
 const router = express.Router({ mergeParams: true });
 

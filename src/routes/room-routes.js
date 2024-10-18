@@ -1,7 +1,11 @@
 import express from 'express';
 import chatRouter from './chat-routes.js';
+import { getAllRooms } from '../controllers/room-controller.js'; // Import the new controller
 
 const router = express.Router();
+
+// Route to get all rooms
+router.get('/', getAllRooms);
 
 // Mount the chat router
 router.use('/:roomId/chat', chatRouter);
